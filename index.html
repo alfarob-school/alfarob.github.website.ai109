@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bridget Alfaro | About Me</title>
+  <style>
+    :root {
+      --pink: #ff4fa3;
+      --purple: #7d3cff;
+      --cream: #fff8fc;
+      --ink: #2a1739;
+      --card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(130deg, #ffd4eb 0%, #f2dcff 45%, #f7e8ff 100%);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      width: min(760px, 100%);
+      background: var(--card);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 18px 40px rgba(91, 33, 182, 0.15);
+      border: 2px solid rgba(125, 60, 255, 0.12);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      line-height: 1.1;
+    }
+
+    .accent {
+      color: var(--purple);
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin: 0 0 1rem;
+    }
+
+    h2 {
+      margin: 1.6rem 0 0.6rem;
+      color: var(--pink);
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      line-height: 1.7;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+
+    .footer {
+      margin-top: 1.8rem;
+      font-size: 0.95rem;
+      color: #5e3d7d;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Hi, I'm <span class="accent">Bridget Alfaro</span>.</h1>
+    <p>
+      I attend <strong>The Catholic University of America</strong>, where I am majoring in
+      <strong>Sociology</strong> with a minor in <strong>Politics</strong>.
+    </p>
+
+    <h2>My Hobbies</h2>
+    <ul>
+      <li>Reading</li>
+      <li>Skateboarding</li>
+      <li>Cooking and baking</li>
+    </ul>
+
+    <h2>Fun Facts About Me</h2>
+    <ul>
+      <li>My favorite colors are pink and purple.</li>
+      <li>I have a twin brother.</li>
+      <li>I live in New Jersey.</li>
+      <li>I have worked four different jobs.</li>
+      <li>I have played the piano for 4 to 5 years.</li>
+    </ul>
+
+    <p class="footer">Thanks for visiting my page.</p>
+  </main>
+</body>
+</html>
