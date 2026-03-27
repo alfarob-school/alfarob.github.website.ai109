@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Play Pong</title>
+  <style>
+    :root {
+      --bg1: #0d1b2a;
+      --bg2: #1b263b;
+      --ink: #e0e1dd;
+      --accent: #5bc0be;
+      --panel: rgba(255, 255, 255, 0.08);
+      --line: rgba(255, 255, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 25% 20%, #223b5d 0%, var(--bg1) 38%, #05090f 100%);
+      padding: 1rem;
+    }
+
+    .game-wrap {
+      width: min(900px, 100%);
+      background: linear-gradient(140deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(3px);
+    }
+
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    .score {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+
+    .controls {
+      font-size: 0.95rem;
+      opacity: 0.95;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed transparent;
+    }
+
+    a:hover {
+      border-color: var(--accent);
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: linear-gradient(180deg, #0d1a2b, #0a1522);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .status {
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+      min-height: 1.25rem;
+      color: #cfe7f6;
+    }
+  </style>
+</head>
+<body>
+  <main class="game-wrap">
+    <div class="hud">
+      <div class="score">Player: <span id="playerScore">0</span> | AI: <span id="aiScore">0</span></div>
+      <div class="controls">Move: W/S or Arrow Up/Down | <button id="restartBtn" type="button">Restart</button> | <a href="index.html">Back to Home</a></div>
+    </div>
+
+    <canvas id="pong" width="880" height="500" aria-label="Pong game area"></canvas>
+    <p class="status" id="status">First to 7 points wins.</p>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("pong");
+    const ctx = canvas.getContext("2d");
+
+    const playerScoreEl = document.getElementById("playerScore");
+    const aiScoreEl = document.getElementById("aiScore");
+    const statusEl = document.getElementById("status");
+    const restartBtn = document.getElementById("restartBtn");
+
+    const state = {
+      width: canvas.width,
+      height: canvas.height,
+      winningScore: 7,
+      running: true,
+      keys: {
+        up: false,
+        down: false,
+      },
+      player: {
+        x: 24,
+        y: canvas.height / 2 - 55,
+        w: 14,
+        h: 110,
+        speed: 8,
+        score: 0,
+      },
+      ai: {
+        x: canvas.width - 38,
+        y: canvas.height / 2 - 55,
+        w: 14,
+        h: 110,
+        speed: 6.3,
+        score: 0,
+        deadZone: 20,
+      },
+      ball: {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        r: 8,
+        vx: 5,
+        vy: 3,
+        maxSpeed: 12,
+      },
+    };
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function resetBall(direction = 1) {
+      state.ball.x = state.width / 2;
+      state.ball.y = state.height / 2;
+      const speed = 5;
+      state.ball.vx = speed * direction;
+      state.ball.vy = (Math.random() * 4 - 2) || 1.5;
+    }
+
+    function resetGame() {
+      state.player.score = 0;
+      state.ai.score = 0;
+      state.running = true;
+      statusEl.textContent = "First to 7 points wins.";
+      playerScoreEl.textContent = "0";
+      aiScoreEl.textContent = "0";
+      state.player.y = state.height / 2 - state.player.h / 2;
+      state.ai.y = state.height / 2 - state.ai.h / 2;
+      resetBall(Math.random() > 0.5 ? 1 : -1);
+    }
+
+    function drawCourt() {
+      ctx.clearRect(0, 0, state.width, state.height);
+      ctx.strokeStyle = "rgba(255,255,255,0.32)";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([14, 16]);
+      ctx.beginPath();
+      ctx.moveTo(state.width / 2, 16);
+      ctx.lineTo(state.width / 2, state.height - 16);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function drawPaddle(paddle) {
+      ctx.fillStyle = "#e0e1dd";
+      ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+    }
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.fillStyle = "#5bc0be";
+      ctx.arc(state.ball.x, state.ball.y, state.ball.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function updatePlayer() {
+      if (state.keys.up) {
+        state.player.y -= state.player.speed;
+      }
+      if (state.keys.down) {
+        state.player.y += state.player.speed;
+      }
+      state.player.y = clamp(state.player.y, 0, state.height - state.player.h);
+    }
+
+    function updateAI() {
+      const target = state.ball.y - state.ai.h / 2;
+      const center = state.ai.y + state.ai.h / 2;
+      if (center < state.ball.y - state.ai.deadZone) {
+        state.ai.y += state.ai.speed;
+      } else if (center > state.ball.y + state.ai.deadZone) {
+        state.ai.y -= state.ai.speed;
+      }
+      state.ai.y = clamp(state.ai.y, 0, state.height - state.ai.h);
+
+      // Add tiny imperfect behavior so AI is beatable.
+      if (Math.abs(target - state.ai.y) < 2 && Math.random() < 0.015) {
+        state.ai.y += (Math.random() - 0.5) * 18;
+      }
+    }
+
+    function paddleCollision(paddle) {
+      return (
+        state.ball.x - state.ball.r < paddle.x + paddle.w &&
+        state.ball.x + state.ball.r > paddle.x &&
+        state.ball.y + state.ball.r > paddle.y &&
+        state.ball.y - state.ball.r < paddle.y + paddle.h
+      );
+    }
+
+    function updateBall() {
+      state.ball.x += state.ball.vx;
+      state.ball.y += state.ball.vy;
+
+      if (state.ball.y - state.ball.r <= 0 || state.ball.y + state.ball.r >= state.height) {
+        state.ball.vy *= -1;
+      }
+
+      if (paddleCollision(state.player) && state.ball.vx < 0) {
+        const offset = (state.ball.y - (state.player.y + state.player.h / 2)) / (state.player.h / 2);
+        state.ball.vx = Math.min(Math.abs(state.ball.vx) + 0.5, state.ball.maxSpeed);
+        state.ball.vy += offset * 2.5;
+      }
+
+      if (paddleCollision(state.ai) && state.ball.vx > 0) {
+        const offset = (state.ball.y - (state.ai.y + state.ai.h / 2)) / (state.ai.h / 2);
+        state.ball.vx = -Math.min(Math.abs(state.ball.vx) + 0.45, state.ball.maxSpeed);
+        state.ball.vy += offset * 2.2;
+      }
+
+      state.ball.vy = clamp(state.ball.vy, -8, 8);
+
+      if (state.ball.x < -20) {
+        state.ai.score += 1;
+        aiScoreEl.textContent = String(state.ai.score);
+        checkGameState();
+        resetBall(1);
+      }
+
+      if (state.ball.x > state.width + 20) {
+        state.player.score += 1;
+        playerScoreEl.textContent = String(state.player.score);
+        checkGameState();
+        resetBall(-1);
+      }
+    }
+
+    function checkGameState() {
+      if (state.player.score >= state.winningScore) {
+        state.running = false;
+        statusEl.textContent = "You win! Press Restart to play again.";
+      } else if (state.ai.score >= state.winningScore) {
+        state.running = false;
+        statusEl.textContent = "AI wins! Press Restart to try again.";
+      }
+    }
+
+    function drawFrame() {
+      drawCourt();
+      drawPaddle(state.player);
+      drawPaddle(state.ai);
+      drawBall();
+    }
+
+    function tick() {
+      if (state.running) {
+        updatePlayer();
+        updateAI();
+        updateBall();
+      }
+      drawFrame();
+      requestAnimationFrame(tick);
+    }
+
+    function handleKey(event, isDown) {
+      const key = event.key.toLowerCase();
+      if (key === "arrowup" || key === "w") {
+        state.keys.up = isDown;
+        event.preventDefault();
+      }
+      if (key === "arrowdown" || key === "s") {
+        state.keys.down = isDown;
+        event.preventDefault();
+      }
+    }
+
+    window.addEventListener("keydown", (event) => handleKey(event, true));
+    window.addEventListener("keyup", (event) => handleKey(event, false));
+    restartBtn.addEventListener("click", resetGame);
+
+    resetGame();
+    tick();
+  </script>
+</body>
+</html>
