@@ -119,6 +119,18 @@
       font-size: 0.95rem;
       color: #5e3d7d;
     }
+
+    .game-link {
+      color: var(--purple);
+      font-weight: 700;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.15em;
+    }
+
+    .game-link:hover,
+    .game-link:focus-visible {
+      color: var(--pink);
+    }
   </style>
 </head>
 <body>
@@ -130,7 +142,10 @@
     </p>
 
     <h2>Play a Game</h2>
-    <p><a href="pong.html">Open the Pong page</a> and play against the AI opponent.</p>
+    <p>
+      <a class="game-link" href="pong.html">Open the Pong page</a>
+      to play against the AI opponent.
+    </p>
 
     <h2>My Hobbies</h2>
     <ul>
