@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Report | Bridget Alfaro</title>
+  <style>
+    :root {
+      --pink: #ff4fa3;
+      --purple: #7d3cff;
+      --cream: #fff8fc;
+      --ink: #2a1739;
+      --card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ff7fbe;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background:
+        radial-gradient(circle at 12% 24%, rgba(255, 255, 255, 0.65) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 76% 14%, rgba(255, 255, 255, 0.6) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 32% 78%, rgba(255, 243, 252, 0.62) 0 1.2px, transparent 1.8px),
+        radial-gradient(circle at 92% 82%, rgba(255, 255, 255, 0.55) 0 1px, transparent 1.7px);
+      background-size: 160px 160px, 200px 200px, 180px 180px, 210px 210px;
+      opacity: 0.62;
+      animation: drift 16s linear infinite;
+    }
+
+    body::after {
+      background:
+        radial-gradient(circle at 18% 36%, rgba(255, 255, 255, 0.85) 0 1.2px, transparent 1.9px),
+        radial-gradient(circle at 54% 62%, rgba(255, 236, 248, 0.8) 0 1.1px, transparent 1.8px),
+        radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.78) 0 1px, transparent 1.8px);
+      background-size: 250px 250px, 300px 300px, 280px 280px;
+      opacity: 0.34;
+      animation: twinkle 4.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.22; }
+      to { opacity: 0.5; }
+    }
+
+    @keyframes drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-18px); }
+    }
+
+    .card {
+      width: min(860px, 100%);
+      background: var(--card);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 18px 40px rgba(91, 33, 182, 0.15);
+      border: 2px solid rgba(125, 60, 255, 0.12);
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 1.6rem 0 0.6rem;
+      color: var(--pink);
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
+    }
+
+    p,
+    li {
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    .accent {
+      color: var(--purple);
+    }
+
+    .top-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      font-size: 0.98rem;
+    }
+
+    a {
+      color: var(--purple);
+      text-decoration: none;
+      border-bottom: 1px dashed transparent;
+    }
+
+    a:hover {
+      border-bottom-color: var(--purple);
+    }
+
+    .note {
+      margin-top: 1.5rem;
+      color: #6e458f;
+      font-size: 0.96rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="top-links">
+      <a href="index.html">Back to Home</a>
+      <a href="pong.html">Play Pong</a>
+    </div>
+
+    <h1><span class="accent">Career Report:</span> Social Worker</h1>
+    <p>
+      Social work is a people-centered career focused on helping individuals, families, and communities handle difficult situations and improve their quality of life.
+    </p>
+
+    <section>
+      <h2>Introduction</h2>
+      <p>Social work stands out to me because it combines compassion, advocacy, and practical problem-solving. It is a career that supports people facing challenges such as poverty, trauma, mental health issues, housing insecurity, and family instability while also pushing for stronger systems and services.</p>
+    </section>
+
+    <section>
+      <h2>Career Overview</h2>
+      <p>Social workers help people cope with everyday problems and connect them to resources that improve their well-being. They may work in schools, hospitals, child welfare agencies, government offices, or community organizations. Their responsibilities often include assessment, case management, advocacy, crisis response, referrals, documentation, and follow-up.</p>
+      <p>The skills that matter most include communication, empathy, organization, problem-solving, and ethical judgment. Social workers must build trust, manage complex cases, and make thoughtful decisions that affect vulnerable people.</p>
+    </section>
+
+    <section>
+      <h2>AI Disruption</h2>
+      <p>AI could change social work by automating documentation, summarizing notes, organizing records, and helping agencies sort information more quickly. It may also influence screening systems, resource matching, and case prioritization. These changes could reorganize how social workers spend their time and how agencies make decisions.</p>
+      <p>At the same time, AI brings risks. If tools are biased or used carelessly, they could produce unfair recommendations or threaten client privacy. Social work still depends on trust, empathy, ethical judgment, and human relationships, which are areas AI cannot fully replace.</p>
+    </section>
+
+    <section>
+      <h2>AI Benefits</h2>
+      <p>AI could help social workers save time on paperwork, create faster summaries, and organize large amounts of information. It can also support decision-making by helping workers compare resources, review research, and prepare clearer communication for clients or coworkers.</p>
+      <p>When used ethically, AI can reduce busywork and allow social workers to spend more time on direct human support. It may also help agencies identify service gaps and improve the way they respond to community needs.</p>
+    </section>
+
+    <section>
+      <h2>Gaining an Advantage</h2>
+      <p>Someone preparing for social work could use AI to practice with case scenarios, build study guides, summarize research, improve writing, and create stronger presentations. These are practical ways to learn faster and communicate more professionally.</p>
+      <p>The biggest advantage would come from using AI with an ethical lens. A student who understands both how to use AI and how to question its limits would be better prepared for the future of the profession.</p>
+    </section>
+
+    <section>
+      <h2>Action Plan</h2>
+      <ul>
+        <li>Research social work specialties and learn how AI is affecting each area.</li>
+        <li>Practice using AI ethically for studying, note organization, and writing support.</li>
+        <li>Create a small portfolio with a policy brief, reflection, or presentation related to social work and AI.</li>
+        <li>Look for volunteer or community experience that builds real interpersonal skills.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Sources and AI Use</h2>
+      <p>I used sources including the U.S. Bureau of Labor Statistics, NASW technology guidance, and social work articles about AI ethics and bias. I used AI to help organize the report, shape the draft, and improve wording, but I reviewed the ideas and kept the final focus on the assignment requirements.</p>
+    </section>
+
+    <p class="note">
+      This website version is a shorter presentation of the full report in <code>career-report.md</code>.
+    </p>
+  </main>
+</body>
+</html>

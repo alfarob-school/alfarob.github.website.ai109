@@ -97,6 +97,11 @@
       margin: 0 0 1rem;
     }
 
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
     h2 {
       margin: 1.6rem 0 0.6rem;
       color: var(--pink);
@@ -120,17 +125,6 @@
       color: #5e3d7d;
     }
 
-    .game-link {
-      color: var(--purple);
-      font-weight: 700;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 0.15em;
-    }
-
-    .game-link:hover,
-    .game-link:focus-visible {
-      color: var(--pink);
-    }
   </style>
 </head>
 <body>
@@ -141,27 +135,37 @@
       <strong>Sociology</strong> with a minor in <strong>Politics</strong>.
     </p>
 
-    <h2>Play a Game</h2>
-    <p>
-      <a class="game-link" href="pong.html">Open the Pong page</a>
-      to play against the AI opponent.
-    </p>
+    <section aria-labelledby="play-heading">
+      <h2 id="play-heading">Play a Game</h2>
+      <p><a href="pong.html">Pong</a></p>
+      <p>Play against the AI opponent.</p>
+    </section>
 
-    <h2>My Hobbies</h2>
-    <ul>
-      <li>Reading</li>
-      <li>Skateboarding</li>
-      <li>Cooking and baking</li>
-    </ul>
+    <section aria-labelledby="career-heading">
+      <h2 id="career-heading">Career Project</h2>
+      <p><a href="career.html">Career Report Page</a></p>
+      <p>Read the website version of my AI 109 career project.</p>
+    </section>
 
-    <h2>Fun Facts About Me</h2>
-    <ul>
-      <li>My favorite colors are pink and purple.</li>
-      <li>I have a twin brother.</li>
-      <li>I live in New Jersey.</li>
-      <li>I have worked four different jobs.</li>
-      <li>I have played the piano for 4 to 5 years.</li>
-    </ul>
+    <section aria-labelledby="hobbies-heading">
+      <h2 id="hobbies-heading">My Hobbies</h2>
+      <ul>
+        <li>Reading</li>
+        <li>Skateboarding</li>
+        <li>Cooking and baking</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="facts-heading">
+      <h2 id="facts-heading">Fun Facts About Me</h2>
+      <ul>
+        <li>My favorite colors are pink and purple.</li>
+        <li>I have a twin brother.</li>
+        <li>I live in New Jersey.</li>
+        <li>I have worked four different jobs.</li>
+        <li>I have played the piano for 4 to 5 years.</li>
+      </ul>
+    </section>
 
     <p class="footer">Thanks for visiting my page.</p>
   </main>
