@@ -6,12 +6,12 @@
   <title>Play Pong</title>
   <style>
     :root {
-      --bg1: #0d1b2a;
-      --bg2: #1b263b;
-      --ink: #e0e1dd;
-      --accent: #5bc0be;
-      --panel: rgba(255, 255, 255, 0.08);
-      --line: rgba(255, 255, 255, 0.35);
+      --pink: #ff4fa3;
+      --purple: #7d3cff;
+      --cream: #fff8fc;
+      --ink: #2a1739;
+      --card: rgba(255, 255, 255, 0.94);
+      --line: rgba(125, 60, 255, 0.28);
     }
 
     * {
@@ -23,20 +23,63 @@
       min-height: 100vh;
       display: grid;
       place-items: center;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
       color: var(--ink);
-      background: radial-gradient(circle at 25% 20%, #223b5d 0%, var(--bg1) 38%, #05090f 100%);
+      background: #ff7fbe;
       padding: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background:
+        radial-gradient(circle at 12% 24%, rgba(255, 255, 255, 0.65) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 76% 14%, rgba(255, 255, 255, 0.6) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 32% 78%, rgba(255, 243, 252, 0.62) 0 1.2px, transparent 1.8px),
+        radial-gradient(circle at 92% 82%, rgba(255, 255, 255, 0.55) 0 1px, transparent 1.7px);
+      background-size: 160px 160px, 200px 200px, 180px 180px, 210px 210px;
+      opacity: 0.62;
+      animation: drift 16s linear infinite;
+    }
+
+    body::after {
+      background:
+        radial-gradient(circle at 18% 36%, rgba(255, 255, 255, 0.85) 0 1.2px, transparent 1.9px),
+        radial-gradient(circle at 54% 62%, rgba(255, 236, 248, 0.8) 0 1.1px, transparent 1.8px),
+        radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.78) 0 1px, transparent 1.8px);
+      background-size: 250px 250px, 300px 300px, 280px 280px;
+      opacity: 0.34;
+      animation: twinkle 4.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.22; }
+      to { opacity: 0.5; }
+    }
+
+    @keyframes drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-18px); }
     }
 
     .game-wrap {
       width: min(900px, 100%);
-      background: linear-gradient(140deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      padding: 1rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(3px);
+      background: var(--card);
+      border: 2px solid rgba(125, 60, 255, 0.12);
+      border-radius: 22px;
+      padding: 1.1rem;
+      box-shadow: 0 18px 40px rgba(91, 33, 182, 0.15);
+      position: relative;
+      z-index: 1;
     }
 
     .hud {
@@ -48,49 +91,95 @@
       flex-wrap: wrap;
     }
 
+    .title {
+      margin: 0 0 0.4rem;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.05;
+      color: var(--purple);
+    }
+
+    .subtitle {
+      margin: 0 0 1rem;
+      color: #6e458f;
+      font-size: 1rem;
+    }
+
     .score {
       font-size: clamp(1.2rem, 3vw, 1.8rem);
       letter-spacing: 0.06em;
       font-weight: 700;
+      color: var(--purple);
     }
 
     .controls {
       font-size: 0.95rem;
-      opacity: 0.95;
+      color: #5e3d7d;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     a {
-      color: var(--accent);
+      color: var(--pink);
       text-decoration: none;
       border-bottom: 1px dashed transparent;
+      transition: border-color 150ms ease, color 150ms ease;
     }
 
     a:hover {
-      border-color: var(--accent);
+      border-color: var(--pink);
+      color: #c92f7b;
+    }
+
+    button {
+      font: inherit;
+      color: var(--cream);
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: 0;
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(125, 60, 255, 0.22);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(125, 60, 255, 0.28);
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     canvas {
       width: 100%;
       height: auto;
       display: block;
-      background: linear-gradient(180deg, #0d1a2b, #0a1522);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 34%),
+        linear-gradient(180deg, #4d186c, #2a123f 55%, #1a0d29);
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.38);
+      box-shadow: inset 0 0 0 1px var(--line), inset 0 -32px 48px rgba(0, 0, 0, 0.2);
     }
 
     .status {
       margin-top: 0.6rem;
       font-size: 0.95rem;
       min-height: 1.25rem;
-      color: #cfe7f6;
+      color: #6e458f;
     }
   </style>
 </head>
 <body>
   <main class="game-wrap">
+    <h1 class="title">Pink Galaxy Pong</h1>
+    <p class="subtitle">Same game, now matching the homepage vibe.</p>
     <div class="hud">
       <div class="score">Player: <span id="playerScore">0</span> | AI: <span id="aiScore">0</span></div>
-      <div class="controls">Move: W/S or Arrow Up/Down | <button id="restartBtn" type="button">Restart</button> | <a href="index.html">Back to Home</a></div>
+      <div class="controls">Move: W/S or Arrow Up/Down <button id="restartBtn" type="button">Restart</button> <a href="index.html">Back to Home</a></div>
     </div>
 
     <canvas id="pong" width="880" height="500" aria-label="Pong game area"></canvas>
@@ -168,7 +257,23 @@
 
     function drawCourt() {
       ctx.clearRect(0, 0, state.width, state.height);
-      ctx.strokeStyle = "rgba(255,255,255,0.32)";
+      const courtGradient = ctx.createLinearGradient(0, 0, 0, state.height);
+      courtGradient.addColorStop(0, "#5a1f7e");
+      courtGradient.addColorStop(0.55, "#35134f");
+      courtGradient.addColorStop(1, "#1b0d2b");
+      ctx.fillStyle = courtGradient;
+      ctx.fillRect(0, 0, state.width, state.height);
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.16)";
+      for (let i = 0; i < 28; i += 1) {
+        const x = (i * 137) % state.width;
+        const y = (i * 83) % state.height;
+        ctx.beginPath();
+        ctx.arc(x, y, i % 3 === 0 ? 1.8 : 1.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "rgba(255, 232, 247, 0.42)";
       ctx.lineWidth = 4;
       ctx.setLineDash([14, 16]);
       ctx.beginPath();
@@ -176,18 +281,30 @@
       ctx.lineTo(state.width / 2, state.height - 16);
       ctx.stroke();
       ctx.setLineDash([]);
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(state.width / 2, state.height / 2, 54, 0, Math.PI * 2);
+      ctx.stroke();
     }
 
     function drawPaddle(paddle) {
-      ctx.fillStyle = "#e0e1dd";
+      const paddleGradient = ctx.createLinearGradient(paddle.x, paddle.y, paddle.x + paddle.w, paddle.y + paddle.h);
+      paddleGradient.addColorStop(0, "#ffd4ee");
+      paddleGradient.addColorStop(1, "#ff73bb");
+      ctx.fillStyle = paddleGradient;
       ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
     }
 
     function drawBall() {
       ctx.beginPath();
-      ctx.fillStyle = "#5bc0be";
+      ctx.fillStyle = "#fff8fc";
       ctx.arc(state.ball.x, state.ball.y, state.ball.r, 0, Math.PI * 2);
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = "rgba(255, 79, 163, 0.6)";
       ctx.fill();
+      ctx.shadowBlur = 0;
     }
 
     function updatePlayer() {
