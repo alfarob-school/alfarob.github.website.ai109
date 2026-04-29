@@ -135,9 +135,9 @@
       <strong>Sociology</strong> with a minor in <strong>Politics</strong>.
     </p>
 
-    <section aria-labelledby="play-heading">
+    <section class="play-section" aria-labelledby="play-heading">
       <h2 id="play-heading">Play a Game</h2>
-      <p><a href="pong.html">Pong</a></p>
+      <p><a class="pong-link" href="pong.html">Pong</a></p>
       <p>Play against the AI opponent.</p>
     </section>
 
@@ -169,5 +169,18 @@
 
     <p class="footer">Thanks for visiting my page.</p>
   </main>
+  <script>
+    document.addEventListener("click", function (event) {
+      const link = event.target.closest("a");
+
+      if (!link || link.getAttribute("href") !== "pong.html") {
+        return;
+      }
+
+      if (!event.target.closest(".play-section .pong-link")) {
+        event.preventDefault();
+      }
+    });
+  </script>
 </body>
 </html>
