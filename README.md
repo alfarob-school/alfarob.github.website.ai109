@@ -1,11 +1,15 @@
 # alfarob.github.website.ai109
 
-Simple starter repository.
+Project files for the career report, website, and presentation.
 
-## Structure
+## Word Report
 
-- `hello.md/HELLO.md`: sample markdown content.
+This repo now includes `pandoc-reference.docx`, a Pandoc reference document used to style the generated Word report.
 
-## Getting Started
+To build the Word version of the report from `career-report.md`, run:
 
-Open the files in your editor and update content as needed.
+```powershell
+.\build-report.ps1
+```
+
+That command generates `career-report.docx` using the styles stored in `pandoc-reference.docx`.
